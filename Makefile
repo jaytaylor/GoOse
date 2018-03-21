@@ -1,11 +1,11 @@
 # MAKEFILE
 #
 # @author      Nicola Asuni <info@tecnick.com>
-# @link        https://github.com/advancedlogic/GoOse
+# @link        https://github.com/jaytaylor/GoOse
 #
 # This file is intended to be executed in a Linux-compatible system.
 # It also assumes that the project has been cloned in the right path under GOPATH:
-# $GOPATH/src/github.com/advancedlogic/GoOse
+# $GOPATH/src/github.com/jaytaylor/GoOse
 #
 # ------------------------------------------------------------------------------
 
@@ -16,13 +16,13 @@
 SHELL=/bin/bash
 
 # CVS path (path to the parent dir containing the project)
-CVSPATH=github.com/advancedlogic
+CVSPATH=github.com/jaytaylor
 
 # Project owner
-OWNER=advancedlogic
+OWNER=jaytaylor
 
 # Project vendor
-VENDOR=advancedlogic
+VENDOR=jaytaylor
 
 # Project name
 PROJECT=GoOse

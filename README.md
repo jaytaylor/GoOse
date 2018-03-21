@@ -2,10 +2,10 @@
 
 *HTML Content / Article Extractor in Golang*
 
-[![Build Status](https://secure.travis-ci.org/advancedlogic/GoOse.png?branch=master)](https://travis-ci.org/advancedlogic/GoOse?branch=master)
-[![Coverage Status](https://coveralls.io/repos/advancedlogic/GoOse/badge.svg?branch=master&service=github)](https://coveralls.io/github/advancedlogic/GoOse?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/advancedlogic/GoOse)](https://goreportcard.com/report/github.com/advancedlogic/GoOse)
-[![GoDoc](https://godoc.org/github.com/advancedlogic/GoOse?status.svg)](http://godoc.org/github.com/advancedlogic/GoOse)
+[![Build Status](https://secure.travis-ci.org/jaytaylor/GoOse.png?branch=master)](https://travis-ci.org/jaytaylor/GoOse?branch=master)
+[![Coverage Status](https://coveralls.io/repos/jaytaylor/GoOse/badge.svg?branch=master&service=github)](https://coveralls.io/github/jaytaylor/GoOse?branch=master)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jaytaylor/GoOse)](https://goreportcard.com/report/github.com/jaytaylor/GoOse)
+[![GoDoc](https://godoc.org/github.com/jaytaylor/GoOse?status.svg)](http://godoc.org/github.com/jaytaylor/GoOse)
 
 
 ## Description
@@ -33,7 +33,7 @@ limitations under the License.
 ## INSTALL
 
 ```bash
-go get github.com/advancedlogic/GoOse
+go get github.com/jaytaylor/GoOse
 ```
 
 ## HOW TO USE IT
@@ -42,7 +42,7 @@ go get github.com/advancedlogic/GoOse
 package main
 
 import (
-	"github.com/advancedlogic/GoOse"
+	"github.com/jaytaylor/GoOse"
 )
 
 func main() {
