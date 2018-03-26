@@ -87,7 +87,7 @@ func (extr *ContentExtractor) GetTitleFromUnmodifiedTitle(title string) string {
 
 	title = strings.Replace(title, motleyReplacement, "", -1)
 
-	if extr.config.debug {
+	if extr.config.Debug {
 		log.Printf("Page title is %s\n", title)
 	}
 
@@ -151,7 +151,7 @@ func (extr *ContentExtractor) GetMetaLanguage(document *goquery.Document) string
 		}
 	}
 
-	extr.config.targetLanguage = language
+	extr.config.TargetLanguage = language
 	return language
 }
 
@@ -372,7 +372,7 @@ func (extr *ContentExtractor) GetCleanTextAndLinks(topNode *goquery.Selection, l
 func (extr *ContentExtractor) CalculateBestNode(document *goquery.Document) *goquery.Selection {
 	var topNode *goquery.Selection
 	nodesToCheck := extr.nodesToCheck(document)
-	if extr.config.debug {
+	if extr.config.Debug {
 		log.Printf("Nodes to check %d\n", len(nodesToCheck))
 	}
 	startingBoost := 1.0
@@ -382,7 +382,7 @@ func (extr *ContentExtractor) CalculateBestNode(document *goquery.Document) *goq
 	nodesWithText := list.New()
 	for _, node := range nodesToCheck {
 		textNode := node.Text()
-		ws := extr.config.stopWords.stopWordsCount(extr.config.targetLanguage, textNode)
+		ws := extr.config.stopWords.stopWordsCount(extr.config.TargetLanguage, textNode)
 		highLinkDensity := extr.isHighLinkDensity(node)
 		if ws.stopWordCount > 2 && !highLinkDensity {
 			nodesWithText.PushBack(node)
@@ -392,7 +392,7 @@ func (extr *ContentExtractor) CalculateBestNode(document *goquery.Document) *goq
 	negativeScoring := 0
 	bottomNegativeScoring := float64(nodesNumber) * 0.25
 
-	if extr.config.debug {
+	if extr.config.Debug {
 		log.Printf("About to inspect num of nodes with text %d\n", nodesNumber)
 	}
 
@@ -417,11 +417,11 @@ func (extr *ContentExtractor) CalculateBestNode(document *goquery.Document) *goq
 			}
 		}
 
-		if extr.config.debug {
+		if extr.config.Debug {
 			log.Printf("Location Boost Score %1.5f on iteration %d id='%s' class='%s'\n", boostScore, i, extr.config.parser.name("id", node), extr.config.parser.name("class", node))
 		}
 		textNode := node.Text()
-		ws := extr.config.stopWords.stopWordsCount(extr.config.targetLanguage, textNode)
+		ws := extr.config.stopWords.stopWordsCount(extr.config.TargetLanguage, textNode)
 		upScore := ws.stopWordCount + int(boostScore)
 		parentNode := node.Parent()
 		extr.updateScore(parentNode, upScore)
@@ -445,7 +445,7 @@ func (extr *ContentExtractor) CalculateBestNode(document *goquery.Document) *goq
 	parentNodesArray := parentNodes.List()
 	for _, p := range parentNodesArray {
 		e := p.(*goquery.Selection)
-		if extr.config.debug {
+		if extr.config.Debug {
 			log.Printf("ParentNode: score=%s nodeCount=%s id='%s' class='%s'\n", extr.config.parser.name("gravityScore", e), extr.config.parser.name("gravityNodes", e), extr.config.parser.name("id", e), extr.config.parser.name("class", e))
 		}
 		score := extr.getScore(e)
@@ -518,16 +518,16 @@ func (extr *ContentExtractor) isBoostable(node *goquery.Selection) bool {
 		currentNodeTag := node.Get(0).DataAtom.String()
 		if currentNodeTag == "p" {
 			if stepsAway >= 3 {
-				if extr.config.debug {
+				if extr.config.Debug {
 					log.Println("Next paragraph is too far away, not boosting")
 				}
 				return false
 			}
 
 			paraText := node.Text()
-			ws := extr.config.stopWords.stopWordsCount(extr.config.targetLanguage, paraText)
+			ws := extr.config.stopWords.stopWordsCount(extr.config.TargetLanguage, paraText)
 			if ws.stopWordCount > 5 {
-				if extr.config.debug {
+				if extr.config.Debug {
 					log.Println("We're gonna boost this node, seems content")
 				}
 				return true
@@ -578,7 +578,7 @@ func (extr *ContentExtractor) isHighLinkDensity(node *goquery.Selection) bool {
 	linkDivisor := float64(nlinkWords) / float64(nwords)
 	score := linkDivisor * float64(nlinks)
 
-	if extr.config.debug {
+	if extr.config.Debug {
 		var logText string
 		if len(node.Text()) >= 51 {
 			logText = node.Text()[0:50]
@@ -632,7 +632,7 @@ func (extr *ContentExtractor) getSiblingsScore(topNode *goquery.Selection) int {
 	nodesToCheck := topNode.Find("p")
 	nodesToCheck.Each(func(i int, s *goquery.Selection) {
 		textNode := s.Text()
-		ws := extr.config.stopWords.stopWordsCount(extr.config.targetLanguage, textNode)
+		ws := extr.config.stopWords.stopWordsCount(extr.config.TargetLanguage, textNode)
 		highLinkDensity := extr.isHighLinkDensity(s)
 		if ws.stopWordCount > 2 && !highLinkDensity {
 			paragraphNumber++
@@ -656,7 +656,7 @@ func (extr *ContentExtractor) getSiblingsContent(currentSibling *goquery.Selecti
 	potentialParagraphs.Each(func(i int, s *goquery.Selection) {
 		text := s.Text()
 		if len(text) > 0 {
-			ws := extr.config.stopWords.stopWordsCount(extr.config.targetLanguage, text)
+			ws := extr.config.stopWords.stopWordsCount(extr.config.TargetLanguage, text)
 			paragraphScore := ws.stopWordCount
 			siblingBaselineScore := 0.30
 			highLinkDensity := extr.isHighLinkDensity(s)
@@ -691,7 +691,7 @@ func (extr *ContentExtractor) walkSiblings(node *goquery.Selection) []*goquery.S
 
 //adds any siblings that may have a decent score to this node
 func (extr *ContentExtractor) addSiblings(topNode *goquery.Selection) *goquery.Selection {
-	if extr.config.debug {
+	if extr.config.Debug {
 		log.Println("Starting to add siblings")
 	}
 	baselinescoreSiblingsPara := extr.getSiblingsScore(topNode)
@@ -712,7 +712,7 @@ func (extr *ContentExtractor) addSiblings(topNode *goquery.Selection) *goquery.S
 
 //PostCleanup removes any divs that looks like non-content, clusters of links, or paras with no gusto
 func (extr *ContentExtractor) PostCleanup(targetNode *goquery.Selection) *goquery.Selection {
-	if extr.config.debug {
+	if extr.config.Debug {
 		log.Println("Starting cleanup Node")
 	}
 	node := extr.addSiblings(targetNode)
@@ -720,7 +720,7 @@ func (extr *ContentExtractor) PostCleanup(targetNode *goquery.Selection) *goquer
 	children.Each(func(i int, s *goquery.Selection) {
 		tag := s.Get(0).DataAtom.String()
 		if tag != "p" {
-			if extr.config.debug {
+			if extr.config.Debug {
 				log.Printf("CLEANUP  NODE: %s class: %s\n", extr.config.parser.name("id", s), extr.config.parser.name("class", s))
 			}
 			//if extr.isHighLinkDensity(s) || extr.isTableAndNoParaExist(s) || !extr.isNodescoreThresholdMet(node, s) {
@@ -738,12 +738,12 @@ func (extr *ContentExtractor) PostCleanup(targetNode *goquery.Selection) *goquer
 
 			subParagraph2 := s.Find("p")
 			if subParagraph2.Length() == 0 && tag != "td" {
-				if extr.config.debug {
+				if extr.config.Debug {
 					log.Println("Removing node because it doesn't have any paragraphs")
 				}
 				extr.config.parser.removeNode(s)
 			} else {
-				if extr.config.debug {
+				if extr.config.Debug {
 					log.Println("Not removing TD node")
 				}
 			}
