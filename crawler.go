@@ -151,7 +151,7 @@ func (c Crawler) Crawl() (*Article, error) {
 	article.Domain = extractor.GetDomain(article.CanonicalLink)
 	article.Tags = extractor.GetTags(document)
 
-	if c.config.extractPublishDate {
+	if c.config.ExtractPublishDate {
 		if timestamp := extractor.GetPublishDate(document); timestamp != nil {
 			article.PublishDate = timestamp
 		}

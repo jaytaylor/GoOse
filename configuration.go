@@ -8,17 +8,17 @@ const defaultUserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_2) AppleWe
 
 // Configuration is a wrapper for various config options
 type Configuration struct {
-	localStoragePath        string //not used in this version
-	imagesMinBytes          int    //not used in this version
-	targetLanguage          string
-	imageMagickConvertPath  string //not used in this version
-	imageMagickIdentifyPath string //not used in this version
-	browserUserAgent        string
-	debug                   bool
-	extractPublishDate      bool
-	additionalDataExtractor bool
-	enableImageFetching     bool
-	useMetaLanguage         bool
+	LocalStoragePath        string `json:"localStoragePath"` //not used in this version
+	ImagesMinBytes          int    `json:"imagesMinBytes"`   //not used in this version
+	TargetLanguage          string `json:"targetLanguage"`
+	ImageMagickConvertPath  string `json:"imageMagickConvertPath"`  //not used in this version
+	ImageMagickIdentifyPath string `json:"imageMagickIdentifyPath"` //not used in this version
+	BrowserUserAgent        string `json:"browserUserAgent"`
+	Debug                   bool   `json:"debug"`
+	ExtractPublishDate      bool   `json:"extractPublishDate"`
+	AdditionalDataExtractor bool   `json:"additionalDataExtractor"`
+	EnableImageFetching     bool   `json:"enableImageFetching"`
+	UseMetaLanguage         bool   `json:"useMetaLanguage"`
 
 	//path to the stopwords folder
 	stopWordsPath string
@@ -32,17 +32,17 @@ type Configuration struct {
 func GetDefaultConfiguration(args ...string) Configuration {
 	if len(args) == 0 {
 		return Configuration{
-			localStoragePath:        "",   //not used in this version
-			imagesMinBytes:          4500, //not used in this version
-			enableImageFetching:     true,
-			useMetaLanguage:         true,
-			targetLanguage:          "en",
-			imageMagickConvertPath:  "/usr/bin/convert",  //not used in this version
-			imageMagickIdentifyPath: "/usr/bin/identify", //not used in this version
-			browserUserAgent:        defaultUserAgent,
-			debug:                   false,
-			extractPublishDate:      true,
-			additionalDataExtractor: false,
+			LocalStoragePath:        "",   //not used in this version
+			ImagesMinBytes:          4500, //not used in this version
+			EnableImageFetching:     true,
+			UseMetaLanguage:         true,
+			TargetLanguage:          "en",
+			ImageMagickConvertPath:  "/usr/bin/convert",  //not used in this version
+			ImageMagickIdentifyPath: "/usr/bin/identify", //not used in this version
+			BrowserUserAgent:        defaultUserAgent,
+			Debug:                   false,
+			ExtractPublishDate:      true,
+			AdditionalDataExtractor: false,
 			stopWordsPath:           "resources/stopwords",
 			stopWords:               NewStopwords(), //TODO with path
 			parser:                  NewParser(),
@@ -50,17 +50,17 @@ func GetDefaultConfiguration(args ...string) Configuration {
 		}
 	}
 	return Configuration{
-		localStoragePath:        "",   //not used in this version
-		imagesMinBytes:          4500, //not used in this version
-		enableImageFetching:     true,
-		useMetaLanguage:         true,
-		targetLanguage:          "en",
-		imageMagickConvertPath:  "/usr/bin/convert",  //not used in this version
-		imageMagickIdentifyPath: "/usr/bin/identify", //not used in this version
-		browserUserAgent:        defaultUserAgent,
-		debug:                   false,
-		extractPublishDate:      true,
-		additionalDataExtractor: false,
+		LocalStoragePath:        "",   //not used in this version
+		ImagesMinBytes:          4500, //not used in this version
+		EnableImageFetching:     true,
+		UseMetaLanguage:         true,
+		TargetLanguage:          "en",
+		ImageMagickConvertPath:  "/usr/bin/convert",  //not used in this version
+		ImageMagickIdentifyPath: "/usr/bin/identify", //not used in this version
+		BrowserUserAgent:        defaultUserAgent,
+		Debug:                   false,
+		ExtractPublishDate:      true,
+		AdditionalDataExtractor: false,
 		stopWordsPath:           "resources/stopwords",
 		stopWords:               NewStopwords(), //TODO with path
 		parser:                  NewParser(),
