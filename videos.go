@@ -5,15 +5,15 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/fatih/set"
+	set "gopkg.in/fatih/set.v0"
 )
 
 // VideoExtractor can extract the main video from an HTML page
 type VideoExtractor struct {
 	article    *Article
 	config     Configuration
-	candidates *set.Set
-	movies     *set.Set
+	candidates set.Interface
+	movies     set.Interface
 }
 
 type video struct {
@@ -28,8 +28,8 @@ type video struct {
 // NewVideoExtractor returns a new instance of a HTML video extractor
 func NewVideoExtractor() VideoExtractor {
 	return VideoExtractor{
-		candidates: set.New(set.ThreadSafe).(*set.Set),
-		movies:     set.New(set.ThreadSafe).(*set.Set),
+		candidates: set.New(set.NonThreadSafe),
+		movies:     set.New(set.NonThreadSafe),
 	}
 }
 
@@ -131,7 +131,7 @@ func (ve *VideoExtractor) getObjectTag(node *goquery.Selection) video {
 }
 
 // GetVideos returns the video tags embedded in the article
-func (ve *VideoExtractor) GetVideos(doc *goquery.Document) *set.Set {
+func (ve *VideoExtractor) GetVideos(doc *goquery.Document) set.Interface {
 	var nodes *goquery.Selection
 	for _, videoTag := range videoTags {
 		tmpNodes := doc.Find(videoTag)

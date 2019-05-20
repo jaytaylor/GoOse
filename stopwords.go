@@ -6,22 +6,22 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/fatih/set"
+	set "gopkg.in/fatih/set.v0"
 )
 
 var punctuationRegex = regexp.MustCompile(`[^\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}\p{Pc}\s]`)
 
 // StopWords implements a simple language detector
 type StopWords struct {
-	cachedStopWords map[string]*set.Set
+	cachedStopWords map[string]set.Interface
 }
 
 // NewStopwords returns an instance of a stop words detector
 func NewStopwords() StopWords {
-	cachedStopWords := make(map[string]*set.Set)
+	cachedStopWords := make(map[string]set.Interface)
 	for lang, stopwords := range sw {
 		lines := strings.Split(stopwords, "\n")
-		cachedStopWords[lang] = set.New(set.ThreadSafe).(*set.Set)
+		cachedStopWords[lang] = set.New(set.NonThreadSafe)
 		for _, line := range lines {
 			if strings.HasPrefix(line, "#") {
 				continue
@@ -47,7 +47,7 @@ func NewStopwords(path string) StopWords {
 		name = strings.Replace(name, "stopwords-", "", -1)
 		name = strings.ToLower(name)
 
-		stops := set.New()
+		stops := set.New(set.NonThreadSafe)
 		lines := ReadLinesOfFile(path + "/" + file.Name())
 		for _, line := range lines {
 			line = strings.Trim(line, " ")
@@ -71,7 +71,7 @@ func (stop *StopWords) stopWordsCount(lang string, text string) wordStats {
 		return wordStats{}
 	}
 	ws := wordStats{}
-	stopWords := set.New(set.ThreadSafe).(*set.Set)
+	stopWords := set.New(set.NonThreadSafe)
 	text = strings.ToLower(text)
 	items := strings.Split(text, " ")
 	stops := stop.cachedStopWords[lang]

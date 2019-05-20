@@ -12,11 +12,11 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/araddon/dateparse"
-	"github.com/fatih/set"
 	"github.com/gigawattio/window"
 	"github.com/jaytaylor/html2text"
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
+	set "gopkg.in/fatih/set.v0"
 )
 
 const defaultLanguage = "en"
@@ -196,7 +196,7 @@ func (extr *ContentExtractor) GetMetaContent(document *goquery.Document, metaNam
 }
 
 // GetMetaContents returns all the meta tags as name->content pairs
-func (extr *ContentExtractor) GetMetaContents(document *goquery.Document, metaNames *set.Set) map[string]string {
+func (extr *ContentExtractor) GetMetaContents(document *goquery.Document, metaNames set.Interface) map[string]string {
 	contents := make(map[string]string)
 	counter := metaNames.Size()
 	document.Find("meta").EachWithBreak(func(i int, s *goquery.Selection) bool {
@@ -259,8 +259,8 @@ func (extr *ContentExtractor) GetDomain(canonicalLink string) string {
 }
 
 // GetTags returns the tags set in the source, if the article has them
-func (extr *ContentExtractor) GetTags(document *goquery.Document) *set.Set {
-	tags := set.New(set.ThreadSafe).(*set.Set)
+func (extr *ContentExtractor) GetTags(document *goquery.Document) set.Interface {
+	tags := set.New(set.NonThreadSafe)
 	selections := document.Find(aRelTagSelector)
 	selections.Each(func(i int, s *goquery.Selection) {
 		tags.Add(s.Text())
@@ -378,7 +378,7 @@ func (extr *ContentExtractor) CalculateBestNode(document *goquery.Document) *goq
 	startingBoost := 1.0
 	cnt := 0
 	i := 0
-	parentNodes := set.New(set.ThreadSafe).(*set.Set)
+	parentNodes := set.New(set.NonThreadSafe)
 	nodesWithText := list.New()
 	for _, node := range nodesToCheck {
 		textNode := node.Text()
