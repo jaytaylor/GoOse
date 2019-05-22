@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	set "gopkg.in/fatih/set.v0"
 )
 
 // Crawler can fetch the target HTML page
@@ -137,7 +138,7 @@ func (c Crawler) Crawl(RawHTML string, url string) (*Article, error) {
 		article.CanonicalLink = article.FinalURL
 	}
 	article.Domain = extractor.GetDomain(article.CanonicalLink)
-	article.Tags = extractor.GetTags(document)
+	article.Tags = extractor.GetTags(document).(*set.Set)
 
 	if c.config.ExtractPublishDate {
 		if timestamp := extractor.GetPublishDate(document); timestamp != nil {
@@ -160,7 +161,7 @@ func (c Crawler) Crawl(RawHTML string, url string) (*Article, error) {
 		article.CleanedText, article.Links = extractor.GetCleanTextAndLinks(article.TopNode, article.MetaLang)
 
 		videoExtractor := NewVideoExtractor()
-		article.Movies = videoExtractor.GetVideos(document)
+		article.Movies = videoExtractor.GetVideos(document).(*set.Set)
 	}
 
 	article.Delta = time.Now().UnixNano() - startTime
