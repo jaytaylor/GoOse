@@ -117,7 +117,7 @@ func (c CrawlerShort) Crawl(RawHTML, url string) (*Article, error) {
 	article.Title = extractor.GetTitle(document)
 	article.MetaDescription = extractor.GetMetaContentWithSelector(document, "meta[name#=(?i)^description$]")
 
-	if c.config.extractPublishDate {
+	if c.config.ExtractPublishDate {
 		if timestamp := extractor.GetPublishDate(document); timestamp != nil {
 			article.PublishDate = timestamp
 		}
